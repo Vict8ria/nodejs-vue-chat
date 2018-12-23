@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Title</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./node_modules/materialize-css/dist/css/materialize.css">
+</head>
+<body>
+    <div id="chat" class="chat">
+         <div class="chat-wrap">
+            <ul class="collection">
+                <li v-for="chatMessage in chatMessages"
+                    v-bind:class="[{ myMessage: chatMessage.author == author }, 'collection-item']">
+                    {{ chatMessage.author }}: {{ chatMessage.text }}
+                </li>
+            </ul>
+        </div>
+        <div class="chat-author">
+            <span>Author:</span>
+            <input v-model="author" type="text">
+        </div>
+        <input v-model="message" @keypress.enter="addMessage" type="text">
+    </div>
+    <script src="./node_modules/vue/dist/vue.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
