@@ -4,7 +4,7 @@ class MessagesApi {
         this.messages = []
     }
 
-    getMessages(id){
+    getMessages(){
         return this.messages
     }
 

@@ -5,8 +5,18 @@ body {
 .chat {
     max-width: 800px;
     margin: auto;
-    height: 100vh;
+    height: calc(100vh - 76px);
     padding: 0 15px;
+}
+
+.change-connection {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.change-connection a {
+    margin: 0 10px;
 }
 
 .chat-wrap {

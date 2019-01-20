@@ -1,54 +1,65 @@
+
+
 window.onload = function() {
 
-    var app =new Vue({
+    let app = new Vue({
         el: '#chat',
         data: {
             message: "",
             author: "Vika",
-            chatMessages: []
+            chatMessages: [],
+            status: 'online',
+            provider: null,
+            providerFabric: null
+        },
+        created: function(){
+            let _this = this;
+
+            this.changeProvider();
         },
         methods: {
-            addAuthor(author){
-               this.newAuthor = author;
+
+            changeProvider(providerName){
+                if(typeof providerName === 'undefined') providerName = 'http';
+
+                let providerFabric = this.getProviderFabric();
+                this.provider = providerFabric.getProvider(providerName);
+                this.provider.getMessages();
             },
+
+            // lazy initialization
+            getProviderFabric(){
+                if(this.providerFabric === null){
+                    this.providerFabric = new ProviderFabric();
+
+                    this.providerFabric.constructor((resp)=>{
+                        Vue.set(this, 'chatMessages', resp.messages)
+                    });
+                }
+
+                return this.providerFabric;
+            },
+
             addMessage(){
+                let message = {text: this.message, author: this.author};
 
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("POST", "http://127.0.0.1:90/messages", true);
-                body = JSON.stringify({text: this.message, author: this.author});
-                xhttp.send(body);
-
+                this.provider.addMessage(message);
                 this.message = "";
 
-            },
-            getMessages(){
-
-                var xhttp = new XMLHttpRequest();
-                xhttp.open("GET", "http://127.0.0.1:90/messages", true);
-                xhttp.send();
-
-                xhttp.onreadystatechange = function() { // (3)
-                    if (xhttp.readyState != 4) return;
-
-                    if (xhttp.status != 200) {
-                        console.log(xhttp.status, xhttp.statusText);
-                    } else {
-
-                        var resp = JSON.parse(xhttp.responseText);
-
-                        Vue.set(app, 'chatMessages', resp.messages)
-                    }
-
-                };
-
             }
-        },
-        created(){
-            var _this = this;
-            setInterval(function (){
-                _this.getMessages()
-            }, 500);
         }
     });
 
 };
+
+
+/*
+ * todo Вынести в отдельный провайдер вебсокеты
+ * Сделать 2 метода, получить сообшения и добавить сообщение
+ * Сделать прослушку события, на получение новых сообщений
+ */
+
+// send callback in to fabric
+// create provider constructor, send callback to this provider
+// create destructor in providers(2), and call this method when you change provider with fabric
+// init last provider

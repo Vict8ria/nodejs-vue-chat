@@ -2,6 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "dependencies": {
-    
+    "websocket": "^1.0.28",
+    "websocket-node": "^0.1.0",
+    "ws": "^6.1.2"
   }
 }

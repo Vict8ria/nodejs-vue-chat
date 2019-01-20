@@ -11,7 +11,7 @@ module.exports = function routing(req, res, params){
     // /messages?fe=53
     let reg = /^\/messages([\/?]+.*)*$/;
 
-    if(url.search(reg) != -1){
+    if(url.search(reg) !== -1){
         controller = "messages";
     }
 
@@ -19,9 +19,9 @@ module.exports = function routing(req, res, params){
         case "messages":
             let content = {};
 
-            if(req.method == 'GET'){
+            if(req.method === 'GET'){
 
-                let id = typeof params.id != 'undefined' ? params.id : 0;
+                let id = typeof params.id !== 'undefined' ? params.id : 0;
 
                 content.messages = messagesApi.getMessages(id);
 
